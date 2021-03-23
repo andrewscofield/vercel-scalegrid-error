@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id                       Int     @default(autoincrement()) @id
+  image                    String?
+  bio                      String?
+  role                     String?
+  meta_student_school      String?
+  meta_student_years       String?
+  meta_hobbyist_years      String?
+  meta_machinist_shop      String?
+  meta_machinist_shop_size String?
+  meta_teacher_school      String?
+  meta_teacher_students    String?
+  role_other               String?
+  cad_app                  String?
+  user                     User    @relation(fields: [user_id], references: [id])
+  user_id                  Int     @unique
+
+  @@map(name: "profiles")
+  @@index([user_id])
+}
+
+model SiteData {
+  id        Int     @default(autoincrement()) @id
+  academy   Json?   
+  aerospace Json?   
+  cncexpert Json?   
+  user      User    @relation(fields: [user_id], references: [id])
+  user_id   Int     @unique
+
+  @@map(name: "sidedata")
+}
+
+model User {
+  id             Int       @default(autoincrement()) @id
+  first_name     String?   
+  last_name      String?   
+  email          String    @unique
+  password       String   
+  is_admin       Boolean   @default(false)
+  email_updates  Boolean?  @default(false)
+  email_verified DateTime? 
+  last_login     DateTime? 
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+  profile        Profile?
+  sitedata       SiteData?
+
+  @@map(name: "users")
+  @@index([email])
+}
+
+model VerificationRequest {
+  id         Int       @default(autoincrement()) @id
+  identifier  String
+  type        String
+  token       String    @unique
+  expires     DateTime
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+
+  @@map(name: "verification_requests")
+}
