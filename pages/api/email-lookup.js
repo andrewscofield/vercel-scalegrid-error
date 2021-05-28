@@ -3,7 +3,7 @@ import prisma from '../../lib/prisma';
 const findUserByEmail = async (email) => {
 
   const fs = require('fs')
-  const path = './prisma'
+  const path = '/tmp'
 
   try {
     if (fs.existsSync(`${path}/ca.pem`)) {
