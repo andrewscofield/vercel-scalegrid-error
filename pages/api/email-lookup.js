@@ -3,10 +3,10 @@ import prisma from '../../lib/prisma';
 const findUserByEmail = async (email) => {
 
   const fs = require('fs')
-  const path = './prisma/ca.pem'
+  const path = './prisma'
 
   try {
-    if (fs.existsSync(path)) {
+    if (fs.existsSync(`${path}/ca.pem`)) {
       // ca file exists
 
       // do nothing
@@ -15,8 +15,10 @@ const findUserByEmail = async (email) => {
       // ca file not exists
 
       // creates ca.pem file from ENV
+
+      fs.mkdirSync(path, { recursive: true })
       
-      fs.writeFileSync(path, process.env.CA_PEM)
+      fs.writeFileSync(`${path}/ca.pem`, process.env.CA_PEM)
     }
   } catch(err) {
     console.error(err)
