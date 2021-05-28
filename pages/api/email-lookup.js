@@ -1,6 +1,27 @@
 import prisma from '../../lib/prisma';
 
 const findUserByEmail = async (email) => {
+
+  const fs = require('fs')
+  const path = './prisma/ca.pem'
+
+  try {
+    if (fs.existsSync(path)) {
+      // ca file exists
+
+      // do nothing
+
+    } else {
+      // ca file not exists
+
+      // creates ca.pem file from ENV
+      
+      fs.writeFileSync(path, process.env.CA_PEM)
+    }
+  } catch(err) {
+    console.error(err)
+  }
+
   const user = await prisma.user.findUnique({
     where: {
       email: email,
